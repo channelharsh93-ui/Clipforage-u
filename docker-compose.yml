@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - MAX_VIDEO_DURATION=1800
+      - MAX_FILE_SIZE_MB=1000
+      - FREE_PLAN_CLIPS=10
+      - FREE_PLAN_VIDEOS=2
+      - WHISPER_MODEL=tiny.en
+      - PROCESSING_WORKERS=2
+      - FREE_MODE=true
+      - PRIVACY_MODE=true
+      - AUTH_REQUIRED=true
+      - ENVIRONMENT=production
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-http://localhost}
+      - PAYMENT_PROVIDER=${PAYMENT_PROVIDER:-none}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID:-}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET:-}
+      - RAZORPAY_WEBHOOK_SECRET=${RAZORPAY_WEBHOOK_SECRET:-}
+    volumes:
+      - clipforge_storage:/app/storage
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  clipforge_storage:

@@ -1,0 +1,32 @@
+# Python
+backend/.venv/
+backend/storage/projects/
+backend/storage/analysis/
+backend/storage/*.sqlite3
+backend/storage/.token_key
+backend/storage/library/music/*
+backend/storage/library/sfx/*
+backend/storage/library/logos/*
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Node/Vite
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+build/
+frontend/tsconfig.tsbuildinfo
+
+# Local environment and secrets (examples remain tracked)
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local/editor artifacts
+.DS_Store
+.vscode/
+.idea/

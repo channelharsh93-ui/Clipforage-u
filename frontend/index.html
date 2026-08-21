@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090b12" />
+    <meta name="description" content="ClipForge — local AI-assisted highlight and short clip generator" />
+    <title>ClipForge — AI Viral Clip Generator</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      })(window.location);
+    </script>
+    <div id="root"></div>
+    <div id="api-config-warning" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#7a1f1f;color:#fff;font-family:sans-serif;font-size:13px;padding:8px 16px;text-align:center;">
+      ⚠️ VITE_API_BASE_URL is not set for this deployment. API requests are being sent to this same domain and will fail. Set it in Vercel → Project → Settings → Environment Variables to your backend URL, then redeploy.
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      import { API_BASE_URL } from "/src/runtime.ts";
+      if (import.meta.env?.PROD !== false && !API_BASE_URL) {
+        var el = document.getElementById("api-config-warning");
+        if (el) el.style.display = "block";
+      }
+    </script>
+  </body>
+</html>
