@@ -23,7 +23,7 @@ PRIVACY_MODE_DEFAULT = os.getenv("PRIVACY_MODE", "true").lower() not in {"0", "f
 ALLOW_OFFICIAL_APIS = os.getenv("ALLOW_OFFICIAL_APIS", "false").lower() in {"1", "true", "on", "yes"}
 AUTH_REQUIRED = os.getenv("AUTH_REQUIRED", "true").lower() in {"1", "true", "on", "yes"}
 SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "clipforge_session")
-SESSION_COOKIE_SECURE = os.getenv("Fix production cross-site authentication cookies", "false").lower() in {"1", "true", "on", "yes"}
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://127.0.0.1:5173")
 PUBLIC_API_URL = os.getenv("PUBLIC_API_URL", "")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
@@ -32,7 +32,7 @@ SMTP_HOST = os.getenv("SMTP_HOST", "")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
-SMTP_FROM = os.getenv("SMTP_FROM", "")
+SMT
 PAYMENT_PROVIDER = os.getenv("PAYMENT_PROVIDER", "none").lower()
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "")
