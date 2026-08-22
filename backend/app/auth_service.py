@@ -72,7 +72,7 @@ def session_user(request: Request) -> dict[str, Any] | None:
 
 
 def set_session_cookie(response: Any, session: dict[str, Any]) -> None:
-    response.set_cookie(SESSION_COOKIE_NAME, str(session["token"]), httponly=True, secure=SESSION_COOKIE_SECURE, samesite="lax", max_age=30 * 86400 if session.get("remember_me") else 12 * 3600, path="/")
+    response.set_cookie(SESSION_COOKIE_NAME, str(session["token"]), httponly=True, secure=SESSION_COOKIE_SECURE,samesite=SESSION_COOKIE_SAMESITE , max_age=30 * 86400 if session.get("remember_me") else 12 * 3600, path="/")
 
 
 def clear_session_cookie(response: Any) -> None:
