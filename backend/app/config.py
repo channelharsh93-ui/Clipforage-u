@@ -24,6 +24,9 @@ ALLOW_OFFICIAL_APIS = os.getenv("ALLOW_OFFICIAL_APIS", "false").lower() in {"1",
 AUTH_REQUIRED = os.getenv("AUTH_REQUIRED", "true").lower() in {"1", "true", "on", "yes"}
 SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "clipforge_session")
 SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
+SESSION_COOKIE_SAMESITE = os.getenv("SESSION_COOKIE_SAMESITE", "lax").lower()
+if SESSION_COOKIE_SAMESITE not in {"lax", "strict", "none"}:
+    SESSION_COOKIE_SAMESITE = "lax"
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://127.0.0.1:5173")
 PUBLIC_API_URL = os.getenv("PUBLIC_API_URL", "")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
