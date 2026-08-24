@@ -9,7 +9,7 @@ from typing import Any
 from fastapi import Request
 
 from . import auth_db
-from .config import FRONTEND_ORIGIN, PUBLIC_API_URL, SESSION_COOKIE_NAME, SESSION_COOKIE_SECURE, STORAGE_ROOT
+from .config import FRONTEND_ORIGIN, PUBLIC_API_URL, SESSION_COOKIE_NAME, SESSION_COOKIE_SAMESITE, SESSION_COOKIE_SECURE, STORAGE_ROOT
 
 EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 _rate_lock = Lock()
