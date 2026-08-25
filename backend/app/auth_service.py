@@ -48,21 +48,35 @@ def public_user(user: dict[str, Any] | None) -> dict[str, Any] | None:
     preferences = user.get("notification_preferences") or "{}"
     try:
         import json
+
         preferences = json.loads(preferences) if isinstance(preferences, str) else preferences
     except Exception:
         preferences = {}
     photo_url = None
     if user.get("profile_photo_path"):
         try:
-            relative = "/media/" + str(__import__("pathlib").Path(user["profile_photo_path"]).resolve().relative_to(STORAGE_ROOT.resolve())).replace("\\", "/")
+            relative = (
+                "/media/"
+                + str(__import__("pathlib").Path(user["profile_photo_path"]).resolve().relative_to(STORAGE_ROOT.resolve())).replace("\\", "/")
+            )
             photo_url = f"{PUBLIC_API_URL.rstrip('/')}{relative}" if PUBLIC_API_URL else relative
         except Exception:
             photo_url = None
     return {
-        "id": user["id"], "email": user["email"], "name": user.get("name") or "", "profile_photo_url": photo_url,
-        "country": user.get("country") or "", "language": user.get("language") or "en", "timezone": user.get("timezone") or "UTC",
-        "plan_id": user.get("plan_id") or "free", "email_verified": bool(user.get("email_verified")), "is_admin": bool(user.get("is_admin")),
-        "notification_preferences": preferences, "theme": user.get("theme") or "dark", "created_at": user.get("created_at"), "last_login_at": user.get("last_login_at"),
+        "id": user["id"],
+        "email": user["email"],
+        "name": user.get("name") or "",
+        "profile_photo_url": photo_url,
+        "country": user.get("country") or "",
+        "language": user.get("language") or "en",
+        "timezone": user.get("timezone") or "UTC",
+        "plan_id": user.get("plan_id") or "free",
+        "email_verified": bool(user.get("email_verified")),
+        "is_admin": bool(user.get("is_admin")),
+        "notification_preferences": preferences,
+        "theme": user.get("theme") or "dark",
+        "created_at": user.get("created_at"),
+        "last_login_at": user.get("last_login_at"),
     }
 
 
@@ -71,7 +85,22 @@ def session_user(request: Request) -> dict[str, Any] | None:
 
 
 def set_session_cookie(response: Any, session: dict[str, Any]) -> None:
-    response.set_cookie(SESSION_COOKIE_NAME, str(session["token"]), httponly=True, secure=SESSION_COOKIE_SECURE,samesite=SESSION_COOKIE_SAMESITE, max_age=30 * 86400 if session.get("remember_me") else 12 * 3600, path="/")
+    """Set the session cookie on a response.
+
+    Uses SESSION_COOKIE_* settings from config. If `session.get("remember_me")` is truthy
+    the cookie will be persisted for 30 days; otherwise it will be a session cookie.
+    """
+    max_age = 30 * 86400 if session.get("remember_me") else None
+    # Starlette/FastAPI response.set_cookie accepts None for max_age
+    response.set_cookie(
+        SESSION_COOKIE_NAME,
+        str(session["token"]),
+        httponly=True,
+        secure=SESSION_COOKIE_SECURE,
+        samesite=SESSION_COOKIE_SAMESITE,
+        max_age=max_age,
+        path="/",
+    )
 
 
 def clear_session_cookie(response: Any) -> None:
@@ -79,7 +108,12 @@ def clear_session_cookie(response: Any) -> None:
 
 
 def auth_payload(user: dict[str, Any], session: dict[str, Any]) -> dict[str, Any]:
-    return {"authenticated": True, "user": public_user(user), "csrf_token": session["csrf_token"], "session": {"id": session["session_id"], "expires_at": session["expires_at"]}}
+    return {
+        "authenticated": True,
+        "user": public_user(user),
+        "csrf_token": session["csrf_token"],
+        "session": {"id": session["session_id"], "expires_at": session["expires_at"]},
+    }
 
 
 def frontend_redirect(path: str = "/app") -> str:
