@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "rootDirectory": "frontend",
+  "rootDirectory": "clipforge-extracted/frontend",
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
